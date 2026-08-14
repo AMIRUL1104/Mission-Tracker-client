@@ -27,7 +27,7 @@ export default function Home() {
     <div className="bg-[#0d0f14] text-[#d8ddf0] min-h-screen flex items-center justify-center p-5 font-sans">
       <div className="max-w-[500px] text-center">
         <div className="text-[32px] font-bold mb-3 font-mono">
-          <span className="text-[#5b6af0]">//</span> Mission Tracker
+          <span className="text-[#5b6af0]">{"//"}</span> Mission Tracker
         </div>
 
         <p className="text-[13px] text-[#8892b0] mb-2 font-mono">
