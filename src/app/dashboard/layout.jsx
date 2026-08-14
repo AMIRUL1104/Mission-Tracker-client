@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import MonthSelector from "@/components/dashboard/home/MonthSelector";
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -43,11 +44,15 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="bg-[#0d0f14] text-[#d8ddf0] min-h-screen grid grid-cols-1 font-sans">
-      {/* Mobile Header */}
-      <div className="hidden md:hidden max-md:flex bg-[#141720] border-b border-[#252a38] p-4 gap-3 items-center justify-between">
-        <div className="text-base font-bold font-mono">
-          <span className="text-[#5b6af0]">//</span> Mission Tracker
+      {/* 📱 Mobile Header (সবাই শুধু মোবাইলে দেখবে) */}
+      <div className="md:hidden flex bg-[#141720] border-b border-[#252a38] p-4 items-center justify-between gap-2">
+        <div className="text-sm font-bold font-mono">
+          <span className="text-[#5b6af0]">{"//"}</span> Tracker
         </div>
+
+        {/* Mobile Screen-এ দেখানোর জন্য */}
+        <MonthSelector />
+
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="bg-transparent border border-[#252a38] text-[#8892b0] px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer"
@@ -60,8 +65,8 @@ export default function DashboardLayout({ children }) {
         {/* Sidebar */}
         <aside
           className={`bg-[#141720] border-r border-[#252a38] py-6 h-[calc(100vh-var(--header-height,0px))] sticky top-0 overflow-y-auto 
-          max-md:absolute max-md:top-[60px] max-md:left-0 max-md:right-0 max-md:h-auto max-md:z-10 max-md:border-r-0 max-md:border-b max-md:border-[#252a38]
-          ${mobileMenuOpen ? "block" : "hidden md:block"}`}
+      max-md:absolute max-md:top-[60px] max-md:left-0 max-md:right-0 max-md:h-auto max-md:z-10 max-md:border-r-0 max-md:border-b max-md:border-[#252a38]
+      ${mobileMenuOpen ? "block" : "hidden md:block"}`}
         >
           <nav className="flex flex-col gap-0">
             {navItems.map((item) => (
@@ -87,11 +92,11 @@ export default function DashboardLayout({ children }) {
 
         {/* Main Content */}
         <main className="py-6 px-5 overflow-y-auto max-h-screen max-md:max-h-[calc(100vh-60px)]">
-          {/* Header */}
-          <div className="border-b border-[#252a38] pb-[18px] mb-6 flex items-center justify-between">
+          {/* 💻 Desktop Header (ল্যাপটপ/পিসিতে যা দেখাবে) */}
+          <div className="border-b border-[#252a38] pb-[18px] mb-6 flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-xl font-bold text-white font-mono">
-                <span className="text-[#5b6af0]">//</span> Mission Tracker
+                <span className="text-[#5b6af0]">{"//"}</span> Mission Tracker
               </div>
               <div className="text-[11px] text-[#8892b0] font-mono mt-[3px]">
                 {new Date().toLocaleDateString("en-US", {
@@ -103,8 +108,15 @@ export default function DashboardLayout({ children }) {
               </div>
             </div>
 
-            <div className="text-[11px] font-mono text-[#3dd68c] bg-[#3dd68c]/[0.07] border border-[#3dd68c]/20 px-3 py-[5px] rounded-md inline-block">
-              {user?.name || "User"}
+            {/* 🚀 Desktop-এর জন্য MonthSelector এখানে যুক্ত করা হলো */}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:block">
+                <MonthSelector />
+              </div>
+
+              <div className="text-[11px] font-mono text-[#3dd68c] bg-[#3dd68c]/[0.07] border border-[#3dd68c]/20 px-3 py-[5px] rounded-md inline-block">
+                {user?.name || "User"}
+              </div>
             </div>
           </div>
 

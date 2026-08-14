@@ -1,6 +1,7 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { TrackerProvider } from "@/context/TrackerContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetBrainsMono.variable}`}>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <TrackerProvider>{children}</TrackerProvider>
+        </AuthProvider>
       </body>
     </html>
   );
