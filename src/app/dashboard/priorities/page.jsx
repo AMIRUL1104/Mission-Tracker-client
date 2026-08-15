@@ -17,7 +17,6 @@ export default function PrioritiesPage() {
   const { currentMonthData, loadingMonth } = useTracker();
   const { token } = useAuth();
 
-  // 💡 monthId এক্সট্র্যাক্ট করে নেওয়া হলো React Compiler Optimization-এর জন্য
   const monthId = currentMonthData?.id;
 
   const [priorities, setPriorities] = useState([]);
