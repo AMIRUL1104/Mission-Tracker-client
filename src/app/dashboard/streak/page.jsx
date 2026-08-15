@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTracker } from "@/context/TrackerContext";
 import { useAuth } from "@/context/AuthContext";
 import StreakStatsCards from "@/components/dashboard/streak/StreakStatsCards";
 import StreakCalendarGrid from "@/components/dashboard/streak/StreakCalendarGrid";
-// import StreakResetControls from "@/components/dashboard/streak/StreakResetControls";
 import { fetchStreakStats } from "@/lib/streakApi";
 
 export default function StreakPage() {
@@ -20,14 +19,14 @@ export default function StreakPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // স্ট্রিক ডেটা লোড করার লজিক
-  const loadStreakData = async () => {
+  // loadStreakData-কে useCallback দিয়ে মেমোইজ করে নেওয়া হলো
+  const loadStreakData = useCallback(async () => {
     if (!token) return;
     setLoading(true);
     try {
       const monthKey = currentMonthData?.monthKey;
       const res = await fetchStreakStats(token, monthKey);
-      if (res.success && res.data) {
+      if (res?.success && res?.data) {
         setStats(res.data);
       }
     } catch (err) {
@@ -35,24 +34,33 @@ export default function StreakPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, currentMonthData?.monthKey]);
 
   useEffect(() => {
-    loadStreakData();
-  }, [currentMonthData, token]);
+    let ignore = false;
 
-  // স্ট্রিক হিস্ট্রি রিসেট করার লজিক
-  const handleResetStreak = async () => {
-    if (!token) return;
-    try {
-      const res = await resetStreaksApi(token);
-      if (res.success) {
-        loadStreakData();
+    const fetchData = async () => {
+      if (!token) return;
+      setLoading(true);
+      try {
+        const monthKey = currentMonthData?.monthKey;
+        const res = await fetchStreakStats(token, monthKey);
+        if (!ignore && res?.success && res?.data) {
+          setStats(res.data);
+        }
+      } catch (err) {
+        console.error("Failed to load streak stats:", err);
+      } finally {
+        if (!ignore) setLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to reset streak:", err);
-    }
-  };
+    };
+
+    fetchData();
+
+    return () => {
+      ignore = true; // Component unmount বা dependency চেঞ্জে Cascading Render রোধ করে
+    };
+  }, [currentMonthData?.monthKey, token]);
 
   if (loadingMonth || (loading && !stats.monthStreaks.length)) {
     return (
@@ -82,9 +90,6 @@ export default function StreakPage() {
         monthStreaks={stats.monthStreaks}
         currentMonthData={currentMonthData}
       />
-
-      {/* Reset Action Area */}
-      {/* <StreakResetControls onReset={handleResetStreak} /> */}
     </div>
   );
 }
