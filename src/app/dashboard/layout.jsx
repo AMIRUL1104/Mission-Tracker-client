@@ -39,6 +39,7 @@ export default function DashboardLayout({ children }) {
     { label: "Streak", href: "/dashboard/streak" },
     { label: "Academics", href: "/dashboard/academics" },
     { label: "Metrics", href: "/dashboard/metrics" },
+    { label: "Analytics", href: "/dashboard/analytics" },
     { label: "Settings", href: "/dashboard/settings" },
   ];
 
