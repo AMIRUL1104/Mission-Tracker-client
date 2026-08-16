@@ -42,7 +42,7 @@ export default function RegisterPage() {
     <div className="bg-[#0d0f14] text-[#d8ddf0] min-h-screen flex items-center justify-center p-4 font-sans">
       <div className="bg-[#1a1e2a] border border-[#252a38] rounded-xl p-8 w-full max-w-md shadow-xl">
         <div className="text-2xl font-bold font-mono mb-2 text-white text-center">
-          <span className="text-[#5b6af0]">//</span> Register
+          <span className="text-[#5b6af0]">{"//"}</span> Register
         </div>
         <p className="text-xs text-[#8892b0] font-mono text-center mb-6">
           Create your Mission Tracker account
